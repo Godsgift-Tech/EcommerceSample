@@ -32,6 +32,13 @@ namespace E_commerce.Infrastructure.RepositoryImplementations.Repositories
         public async Task<Category?> GetCategoryById(Guid id) => await _db.Categories.AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
 
+        public async Task<Category?> GetCategoryByName(string categoryName)
+        {
+           return await _db.Categories.AsNoTracking()
+          .FirstOrDefaultAsync(c => c.CategoryName==categoryName.ToLower());
+                
+        }
+
         public async Task UpdateCategoryAsync(Category category)
         {
             var update = await _db.Categories.FirstOrDefaultAsync(c => c.Id == category.Id);

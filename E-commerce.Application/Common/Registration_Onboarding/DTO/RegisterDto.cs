@@ -8,10 +8,9 @@ namespace E_commerce.Application.Common.Registration_Onboarding.DTO
 {
     public class RegisterDto
     {
-    }
-    
-    public class LoginDto
-    {
-
+        public string FirstName { get; set; } = default!;
+        public string LastName { get; set; } = default!;
+        public string Email { get; set; } = default!;
+        public string Password { get; set; } = default!;
     }
 }

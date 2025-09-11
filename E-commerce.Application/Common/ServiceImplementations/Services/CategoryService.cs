@@ -27,9 +27,12 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
             _memoryCache = memoryCache;
         }
 
-        public Task<ServiceResponse<CreateCategoryDto>> CreateCategoryAsync(CategoryDto category)
+        public async Task<ServiceResponse<CreateCategoryDto>> CreateCategoryAsync(CategoryDto category)
         {
-            throw new NotImplementedException();
+        // check for duplicate category
+        var existingCategory = await _unitOfWork.CategoryRepository.GetCategoryByName(category.CategoryName);
+            if (existingCategory != null)
+                return new ServiceResponse<CreateCategoryDto>(null!, false, "This category already exist proceed to add products");
 
         }
 

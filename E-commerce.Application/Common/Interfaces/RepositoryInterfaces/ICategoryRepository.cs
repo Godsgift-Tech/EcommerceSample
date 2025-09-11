@@ -9,5 +9,7 @@ namespace E_commerce.Application.Common.Interfaces.RepositoryInterfaces
         Task<bool> DeleteCategoryAsync(Category category);
         Task<IEnumerable<Category>> GetAllCategoriesAsync();
         Task<Category?> GetCategoryById(Guid id);
+        Task<Category?> GetCategoryByName(string categoryName);
+
     }
 }
