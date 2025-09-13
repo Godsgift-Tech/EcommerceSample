@@ -6,7 +6,7 @@ namespace E_commerce.Application.Common.Interfaces.ServiceInterfaces
 {
     public interface ICategoryService
     {
-        Task<ServiceResponse<CreateCategoryDto>> CreateCategoryAsync(CategoryDto category);
+        Task<ServiceResponse<CreateCategoryDto>> CreateCategoryAsync(CreateCategoryDto categoryDto);
         Task <ServiceResponse<CategoryDto>> UpdateCategoryAsync(Guid categoryId, UpdateCategoryDto category);
         Task<ServiceResponse<bool>> DeleteCategoryAsync(Guid categoryId);
         Task<ServiceResponse<CreateCategoryDto>>GetCategoryById(Guid categoryId);

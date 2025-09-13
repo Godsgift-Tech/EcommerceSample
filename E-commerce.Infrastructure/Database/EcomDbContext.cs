@@ -20,46 +20,42 @@ namespace E_commerce.Infrastructure.Database
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-
             base.OnModelCreating(builder);
 
-            //Product => User
+            // Product → User
             builder.Entity<Product>()
-                .HasOne(p=>p.User)
-                .WithMany(u=>u.Products)
+                .HasOne(p => p.User)
+                .WithMany(u => u.Products)
                 .HasForeignKey(p => p.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);  // 
 
+            // Product → Category
             builder.Entity<Product>()
-                .HasOne(p=>p.Category)
-                .WithMany(c=>c.Products)
-                .HasForeignKey(p=>p.CategoryId)
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Category → User
             builder.Entity<Category>()
-              .HasMany(c => c.Products)
-              .WithOne(p => p.Category)
-              .HasConstraintName("CategoryName");
-            // category => User
-            builder.Entity<Category>()
-              .HasOne(c => c.User)
-              .WithMany(u => u.ProductCategories)
-              .HasForeignKey(c=> c.UserId)
-              .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(c => c.User)
+                .WithMany(u => u.ProductCategories)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);  //
 
+            // Order → User
+            builder.Entity<Order>()
+                .HasOne(o => o.User)
+                .WithMany(u => u.ProductOrders)
+                .HasForeignKey(o => o.UserId)
+                .OnDelete(DeleteBehavior.NoAction);  // 
 
+            // Order ↔ Products many-to-many
             builder.Entity<Order>()
                 .HasMany(or => or.Products)
                 .WithMany(p => p.ProductOrder);
-
-            builder.Entity<Order>()
-            .HasOne(o => o.User)
-            .WithMany(u => u.ProductOrders)
-            .HasForeignKey(c => c.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-
-
         }
+
+
     }
 }
