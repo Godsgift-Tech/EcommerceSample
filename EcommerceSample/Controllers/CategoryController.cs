@@ -1,8 +1,11 @@
 ﻿using E_commerce.Application.Common.Interfaces.ServiceInterfaces;
 using E_commerce.Application.Common.ServiceImplementations.ServiceDTO.ProductCategory;
+using E_commerce.Application.Common.ServiceImplementations.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Ecommerce.API.Controllers
 {
@@ -18,14 +21,18 @@ namespace Ecommerce.API.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateCategoryDto dto)
+        [Authorize]
+        public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto dto)
         {
-            var result = await _cS.CreateCategoryAsync(dto);
-            return result.success ? Ok(result) : BadRequest(result);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+                return Unauthorized();
+
+            var result = await _cS.CreateCategoryAsync(dto, userId);
+            return Ok(result);
         }
 
         [HttpPut("update_{id}")]
-        
         public async Task<IActionResult> Update( Guid id, [FromBody] UpdateCategoryDto dto)
         {
             var result = await _cS.UpdateCategoryAsync(id, dto);

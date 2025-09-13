@@ -1,8 +1,10 @@
-﻿using System;
+﻿using E_commerce.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace E_commerce.Application.Common.ServiceImplementations.ServiceDTO.ProductCategory
@@ -11,6 +13,7 @@ namespace E_commerce.Application.Common.ServiceImplementations.ServiceDTO.Produc
     {
         public string CategoryName { get; set; }
         public string CategoryDescription { get; set; }
+      
         public DateTime CreatedAT { get; set; }
 
     }

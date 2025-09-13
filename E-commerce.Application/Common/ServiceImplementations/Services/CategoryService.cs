@@ -25,7 +25,7 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
 
       
 
-        public async Task<ServiceResponse<CreateCategoryDto>> CreateCategoryAsync(CreateCategoryDto categoryDto)
+        public async Task<ServiceResponse<CreateCategoryDto>> CreateCategoryAsync(CreateCategoryDto categoryDto, string userId)
         {
             var existingCategory = await _unitOfWork.CategoryRepository
                 .GetCategoryByName(categoryDto.CategoryName);
@@ -36,6 +36,8 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
             }
 
             var newcategory = _mapper.Map<Category>(categoryDto);
+           // newcategory.UserId=user
+                 newcategory.UserId = userId;
             await _unitOfWork.CategoryRepository.CreateCategoryAsync(newcategory);
             await _unitOfWork.Completed();
 
