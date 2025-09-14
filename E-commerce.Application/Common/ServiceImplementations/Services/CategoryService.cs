@@ -116,8 +116,8 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
             await _unitOfWork.CategoryRepository.UpdateCategoryAsync(existingCategory);
 
             await _unitOfWork.Completed();
+          
             // Map back to DTO for response
-            await _unitOfWork.CategoryRepository.ReloadAsync(existingCategory);
             var updatedCategory = _mapper.Map<CategoryDto>(existingCategory);
             // remove cache
             _memoryCache.Remove($"category_{categoryId}");

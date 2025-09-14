@@ -27,7 +27,7 @@ namespace E_commerce.Infrastructure.RepositoryImplementations.Repositories
 
         public async Task<PagedResult<Category>> GetAllCategoriesAsync(int pageNumber, int pageSize)
         {
-           
+
             var query = _db.Categories
                           .AsNoTracking()
                           .OrderBy(p => p.Id); // Sort deterministically
@@ -40,25 +40,10 @@ namespace E_commerce.Infrastructure.RepositoryImplementations.Repositories
 
         public async Task<Category?> GetCategoryByName(string categoryName)
         {
-           return await _db.Categories.AsNoTracking()
-          .FirstOrDefaultAsync(c => c.CategoryName==categoryName.ToLower());
-                
+            return await _db.Categories.AsNoTracking()
+           .FirstOrDefaultAsync(c => c.CategoryName == categoryName.ToLower());
+
         }
-
-        //public async Task UpdateCategoryAsync(Category category)
-        //{
-        //    var update = await _db.Categories.FindAsync(category.Id);
-        //       // FirstOrDefaultAsync(c => c.Id == category.Id);
-        //    if (update != null)
-        //        _db.Update(category);
-
-
-        //}
-        public async Task ReloadAsync(Category category)
-        {
-            await _db.Entry(category).ReloadAsync();
-        }
-
 
         public async Task UpdateCategoryAsync(Category category)
         {
