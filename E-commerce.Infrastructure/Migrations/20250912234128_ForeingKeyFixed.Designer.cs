@@ -4,6 +4,7 @@ using E_commerce.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_commerce.Infrastructure.Migrations
 {
     [DbContext(typeof(EcomDbContext))]
-    partial class EcomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250912234128_ForeingKeyFixed")]
+    partial class ForeingKeyFixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,7 +118,7 @@ namespace E_commerce.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAT")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("UpdatedAT")
+                    b.Property<DateTime>("UpateddAT")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")

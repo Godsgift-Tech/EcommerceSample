@@ -1,4 +1,6 @@
-﻿using E_commerce.Core.Entities;
+﻿using E_commerce.Application.Common.ServiceImplementations.Pagination;
+using E_commerce.Core.Entities;
+using System.Runtime.InteropServices;
 
 namespace E_commerce.Application.Common.Interfaces.RepositoryInterfaces
 {
@@ -6,8 +8,10 @@ namespace E_commerce.Application.Common.Interfaces.RepositoryInterfaces
     {
         Task CreateCategoryAsync(Category category);
         Task UpdateCategoryAsync(Category category);
-        Task<bool> DeleteCategoryAsync(Category category);
-        Task<IEnumerable<Category>> GetAllCategoriesAsync();
+        // for reloading changes
+        Task ReloadAsync(Category category);
+        Task<bool> DeleteCategoryAsync(Guid id);
+        Task<PagedResult<Category>> GetAllCategoriesAsync(int pageNumber, int pageSize);
         Task<Category?> GetCategoryById(Guid id);
         Task<Category?> GetCategoryByName(string categoryName);
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using E_commerce.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,4 +32,5 @@ namespace E_commerce.Application.Common.ServiceImplementations.Pagination
             };
         }
     }
+
 }

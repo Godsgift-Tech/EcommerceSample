@@ -4,6 +4,7 @@ using E_commerce.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_commerce.Infrastructure.Migrations
 {
     [DbContext(typeof(EcomDbContext))]
-    partial class EcomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250914092202_updatedCategory-UpdatedAT")]
+    partial class updatedCategoryUpdatedAT
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

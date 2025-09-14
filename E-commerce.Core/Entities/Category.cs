@@ -12,7 +12,8 @@ namespace E_commerce.Core.Entities
         public string UserId { get; set; }
         public AppUser User { get; set; }
         public DateTime CreatedAT { get; set; }
-        public DateTime UpateddAT { get; set; }
+        public DateTime? UpdatedAT { get; set; }
+
         public ICollection<Product> Products { get; set; }= new List <Product>();
 
     }

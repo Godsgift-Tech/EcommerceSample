@@ -1,10 +1,16 @@
+using E_commerce.Application.Common.Interfaces.RepositoryInterfaces;
+using E_commerce.Application.Common.Interfaces.ServiceInterfaces;
+using E_commerce.Application.Common.Interfaces.UnitOfWork;
+using E_commerce.Application.Common.Mapping;
+using E_commerce.Application.Common.ServiceImplementations.Services;
 using E_commerce.Core.Entities;
 using E_commerce.Infrastructure.Database;
 using E_commerce.Infrastructure.Identity;
+using E_commerce.Infrastructure.RepositoryImplementations.Repositories;
+using E_commerce.Infrastructure.UnitOFWorkImplementation.UnitOFWorks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -22,6 +28,24 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(p =>
 
 }). AddEntityFrameworkStores<EcomDbContext>()
     .AddDefaultTokenProviders();
+
+//  Register Repository
+builder.Services.AddScoped<ICategoryRepository,  CategoryRepository>();
+builder.Services.AddScoped<IProductRepository,  ProductRepository>();
+
+//  Register Repository
+
+//builder.Services.AddScoped<IProductService,  ProductService>();
+builder.Services.AddScoped<ICategoryService,  CategoryService>();
+
+//  Register Unit of work
+builder.Services.AddScoped<IUnitOFWorks,  UnitOFWork>();
+builder.Services.AddMemoryCache();
+
+
+
+//  AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 
 
