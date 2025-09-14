@@ -26,10 +26,13 @@ namespace E_commerce.Application.Common.Mapping
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Category, GetCategoryDto>().ReverseMap();
 
+          
             // Update
             CreateMap<UpdateCategoryDto, Category>()
                 .ForMember(dest => dest.UserId, opt => opt.Ignore())
                 .ForMember(dest => dest.User, opt => opt.Ignore());
+               // .ForMember(dest => dest.UpdatedAT, opt => opt.Ignore());  
+
             CreateMap<Category, UpdateCategoryDto>();
         }
     }
