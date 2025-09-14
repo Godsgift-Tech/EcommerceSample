@@ -11,12 +11,26 @@ namespace E_commerce.Application.Common.Mapping
 {
     public class MappingProfile : Profile
     {
-        public MappingProfile() 
+        public MappingProfile()
         {
-            CreateMap<Category, CreateCategoryDto>().ReverseMap();
-            CreateMap<Category, CategoryDto>().ReverseMap();
-            CreateMap<Category, UpdateCategoryDto>().ReverseMap();
+            // Create
+            CreateMap<CreateCategoryDto, Category>()
+                .ForMember(dest => dest.UserId, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore());
+            CreateMap<Category, CreateCategoryDto>();
 
+            // Read
+            //CreateMap<CategoryDto, Category>()
+            // .ForMember(dest => dest.UserId, opt => opt.Ignore())
+            //    .ForMember(dest => dest.User, opt => opt.Ignore());
+            CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<Category, GetCategoryDto>().ReverseMap();
+
+            // Update
+            CreateMap<UpdateCategoryDto, Category>()
+                .ForMember(dest => dest.UserId, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore());
+            CreateMap<Category, UpdateCategoryDto>();
         }
     }
 }

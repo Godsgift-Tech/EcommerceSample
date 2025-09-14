@@ -8,6 +8,8 @@ namespace E_commerce.Application.Common.Interfaces.RepositoryInterfaces
     {
         Task CreateCategoryAsync(Category category);
         Task UpdateCategoryAsync(Category category);
+        // for reloading changes
+        Task ReloadAsync(Category category);
         Task<bool> DeleteCategoryAsync(Guid id);
         Task<PagedResult<Category>> GetAllCategoriesAsync(int pageNumber, int pageSize);
         Task<Category?> GetCategoryById(Guid id);

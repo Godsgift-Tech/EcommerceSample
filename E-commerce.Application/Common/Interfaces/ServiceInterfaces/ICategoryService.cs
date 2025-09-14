@@ -6,13 +6,12 @@ namespace E_commerce.Application.Common.Interfaces.ServiceInterfaces
 {
     public interface ICategoryService
     {
-        Task<ServiceResponse<CreateCategoryDto>> CreateCategoryAsync(CreateCategoryDto categoryDto);
+        Task<ServiceResponse<CreateCategoryDto>> CreateCategoryAsync(CreateCategoryDto categoryDto, string userId);
         Task <ServiceResponse<CategoryDto>> UpdateCategoryAsync(Guid categoryId, UpdateCategoryDto category);
         Task<ServiceResponse<bool>> DeleteCategoryAsync(Guid categoryId);
         Task<ServiceResponse<CreateCategoryDto>>GetCategoryById(Guid categoryId);
-        Task<ServiceResponse<PagedResult<CategoryDto>>> GetAllCategoriesAsync(int pageNumber, int pageSize);
-
-
+        Task<ServiceResponse<CreateCategoryDto>>GetCategoryByName(string categoryName);
+        Task<ServiceResponse<PagedResult<GetCategoryDto>>> GetAllCategoriesAsync(int pageNumber, int pageSize);
 
     }
 }

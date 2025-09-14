@@ -4,7 +4,7 @@
     {
         public string CategoryName { get; set; }
         public string CategoryDescription { get; set; }
-        public DateTime UpateddAT { get; set; }
+        public DateTime UpadtedAT { get; set; }
 
     }
 }

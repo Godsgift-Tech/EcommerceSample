@@ -25,7 +25,7 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
 
       
 
-        public async Task<ServiceResponse<CreateCategoryDto>> CreateCategoryAsync(CreateCategoryDto categoryDto)
+        public async Task<ServiceResponse<CreateCategoryDto>> CreateCategoryAsync(CreateCategoryDto categoryDto, string userId)
         {
             var existingCategory = await _unitOfWork.CategoryRepository
                 .GetCategoryByName(categoryDto.CategoryName);
@@ -36,6 +36,7 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
             }
 
             var newcategory = _mapper.Map<Category>(categoryDto);
+            newcategory.UserId = userId;   //assigning the userId
             await _unitOfWork.CategoryRepository.CreateCategoryAsync(newcategory);
             await _unitOfWork.Completed();
 
@@ -71,25 +72,25 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
             }
         }
 
-        public async Task<ServiceResponse<PagedResult<CategoryDto>>> GetAllCategoriesAsync(int pageNumber, int pageSize)
+        public async Task<ServiceResponse<PagedResult<GetCategoryDto>>> GetAllCategoriesAsync(int pageNumber, int pageSize)
         {
             var cacheKey = $"{AllCategoryCacheKey}_page_{pageNumber}_size_{pageSize}";
-            if (_memoryCache.TryGetValue(cacheKey, out PagedResult<CategoryDto>? cachedCategory))
+            if (_memoryCache.TryGetValue(cacheKey, out PagedResult<GetCategoryDto>? cachedCategory))
             {
-                return new ServiceResponse<PagedResult<CategoryDto>>(cachedCategory, true, "Categories loaded from cache");
+                return new ServiceResponse<PagedResult<GetCategoryDto>>(cachedCategory, true, "Categories loaded from cache");
             }
             var result = await _unitOfWork.CategoryRepository.GetAllCategoriesAsync(pageNumber, pageSize);
 
-            var mappedResult = new PagedResult<CategoryDto>
+            var mappedResult = new PagedResult<GetCategoryDto>
             {
-              Items = _mapper.Map<List<CategoryDto>>(result),
+              Items = _mapper.Map<List<GetCategoryDto>>(result.Items),
               TotalCount = result.TotalCount,
               PageSize = result.PageSize,
                PageNumber = result.PageNumber
             };
             _memoryCache.Set(cacheKey, mappedResult, TimeSpan.FromMinutes(5));
 
-            return new ServiceResponse<PagedResult<CategoryDto>>(mappedResult, true, "categories feltched and cached");
+            return new ServiceResponse<PagedResult<GetCategoryDto>>(mappedResult, true, "categories feltched and cached");
         }
 
         public async Task<ServiceResponse<CreateCategoryDto>> GetCategoryById(Guid categoryId)
@@ -105,14 +106,33 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
         {
             var existingCategory = await _unitOfWork.CategoryRepository.GetCategoryById(categoryId);
             if (existingCategory == null) return new ServiceResponse<CategoryDto>(null!, false, "category not found");
-            var updateCategory = _mapper.Map<UpdateCategoryDto>(existingCategory);
+
+            // Map DTO values into the tracked entity
+            _mapper.Map(category, existingCategory);
+            //  update the timestamp
+
+            existingCategory.UpdatedAT = DateTime.UtcNow;
+            // Pass the tracked entity to repo (it will just copy values)
             await _unitOfWork.CategoryRepository.UpdateCategoryAsync(existingCategory);
+
             await _unitOfWork.Completed();
+            // Map back to DTO for response
+            await _unitOfWork.CategoryRepository.ReloadAsync(existingCategory);
             var updatedCategory = _mapper.Map<CategoryDto>(existingCategory);
             // remove cache
             _memoryCache.Remove($"category_{categoryId}");
             _memoryCache.Remove(AllCategoryCacheKey);
             return new ServiceResponse<CategoryDto>(updatedCategory, true, "Product category updated ");
+        }
+
+        public async Task<ServiceResponse<CreateCategoryDto>> GetCategoryByName(string categoryName)
+        {
+            var existingCategory =await _unitOfWork.CategoryRepository.GetCategoryByName(categoryName);
+            if (existingCategory == null) return new ServiceResponse<CreateCategoryDto>(null!, false, $"{categoryName} category is not available");
+            var categoryInfo = _mapper.Map<CreateCategoryDto>(existingCategory);
+            return new ServiceResponse<CreateCategoryDto>(categoryInfo, true, $"{categoryName} category retrieved successfully" );
+
+
         }
     }
 }

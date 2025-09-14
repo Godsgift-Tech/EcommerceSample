@@ -1,4 +1,5 @@
-﻿using E_commerce.Application.Common.Interfaces.RepositoryInterfaces;
+﻿using AutoMapper;
+using E_commerce.Application.Common.Interfaces.RepositoryInterfaces;
 using E_commerce.Application.Common.ServiceImplementations.Pagination;
 using E_commerce.Core.Entities;
 using E_commerce.Infrastructure.Database;
@@ -44,12 +45,30 @@ namespace E_commerce.Infrastructure.RepositoryImplementations.Repositories
                 
         }
 
+        //public async Task UpdateCategoryAsync(Category category)
+        //{
+        //    var update = await _db.Categories.FindAsync(category.Id);
+        //       // FirstOrDefaultAsync(c => c.Id == category.Id);
+        //    if (update != null)
+        //        _db.Update(category);
+
+
+        //}
+        public async Task ReloadAsync(Category category)
+        {
+            await _db.Entry(category).ReloadAsync();
+        }
+
+
         public async Task UpdateCategoryAsync(Category category)
         {
-            var update = await _db.Categories.FirstOrDefaultAsync(c => c.Id == category.Id);
+            var update = await _db.Categories.FindAsync(category.Id);
             if (update != null)
-                _db.Update(category);
-
+            {
+                // Copy values from detached category to the tracked entity
+                _db.Entry(update).CurrentValues.SetValues(category);
+            }
         }
+
     }
 }
