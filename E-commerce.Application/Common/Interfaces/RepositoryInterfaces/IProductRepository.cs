@@ -1,4 +1,5 @@
-﻿using E_commerce.Core.Entities;
+﻿using E_commerce.Application.Common.ServiceImplementations.Pagination;
+using E_commerce.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,10 @@ namespace E_commerce.Application.Common.Interfaces.RepositoryInterfaces
     {
         Task CreateProductAsync(Product product);
         Task UpdateProductAsync(Product product);
-        Task<bool> DeleteProductAsync(Product product);
-        Task<IEnumerable<Product>> GetAllProductsAsync();
+        Task<bool> DeleteProductAsync(Guid id);
         Task<Product?>GetProductById(Guid id);
+        Task<Product?> GetProductByName(string productName);
+        Task<PagedResult<Product>> GetProductsByCategories(string? categoryName, string categoryId, double? Price, int pageNumber, int pageSize);
+
     }
 }

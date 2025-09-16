@@ -68,7 +68,7 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
 
             catch (Exception ex)
             {
-              return new ServiceResponse<bool>(false, false, $" Error was encoutered in deleting product category:  { ex.Message}");
+              return new ServiceResponse<bool>(false, false, $" Error was encountered in deleting product category:  { ex.Message}");
             }
         }
 
@@ -112,7 +112,7 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
             //  update the timestamp
 
             existingCategory.UpdatedAT = DateTime.UtcNow;
-            // Pass the tracked entity to repo (it will just copy values)
+            // Pass the tracked entity to repo 
             await _unitOfWork.CategoryRepository.UpdateCategoryAsync(existingCategory);
 
             await _unitOfWork.Completed();

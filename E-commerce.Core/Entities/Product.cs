@@ -25,11 +25,20 @@ namespace E_commerce.Core.Entities
         public double QuantityDemanded { get; set; }
         public double RemainingQuantity => AvailableQuantity - QuantityDemanded;
         public DateTime CreatedAT { get; set; } 
-        public DateTime UpateddAT { get; set; } 
+        public DateTime? UpdatedAT { get; set; } 
         public string UserId { get; set; }
         public AppUser User { get; set; }
         public double UnitPrice { get; set; }
+        [MaxLength(3)]
+        public string Currency { get; set; } = "NGN";
         public double TotalPrice => AvailableQuantity * UnitPrice;
+
+
+        // Display values with currency
+        public string DisplayPrice => $"{Currency} {UnitPrice:N2} ";
+
+        public string TotalPriceWithCurrency => $"{Currency} {TotalPrice:C}";
+
 
 
     }

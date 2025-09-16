@@ -29,9 +29,12 @@ namespace E_commerce.Application.Common.ServiceImplementations.ServiceDTO.Produc
         public double AvailableQuantity { get; set; }
       
         public DateTime CreatedAT { get; set; }
-        public DateTime UpateddAT { get; set; }
+        public DateTime UpdatedAT { get; set; }
 
         public double UnitPrice { get; set; }
+        public string Currency { get; set; } = "NGN";
+        public string DisplayPrice => $"{Currency} {UnitPrice:N2} ";
+
     }
 
 
