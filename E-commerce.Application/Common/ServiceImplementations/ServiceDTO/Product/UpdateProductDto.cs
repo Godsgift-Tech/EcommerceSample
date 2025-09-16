@@ -9,10 +9,14 @@
        
         public double AvailableQuantity { get; set; }
       //  public DateTime CreatedAT { get; set; }
-        public DateTime UpateddAT { get; set; }
+        public DateTime UpdatedAT { get; set; }
+        public string Currency { get; set; } = "NGN";
+        public string DisplayPrice => $"{UnitPrice:N2} {Currency}";
+
 
         public double UnitPrice { get; set; }
-      //  public double TotalPrice => AvailableQuantity * UnitPrice;
+
+        //  public double TotalPrice => AvailableQuantity * UnitPrice;
     }
 
 

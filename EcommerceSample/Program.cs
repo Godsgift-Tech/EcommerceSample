@@ -33,9 +33,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(p =>
 builder.Services.AddScoped<ICategoryRepository,  CategoryRepository>();
 builder.Services.AddScoped<IProductRepository,  ProductRepository>();
 
-//  Register Repository
+//  Register Applcation Services
 
-//builder.Services.AddScoped<IProductService,  ProductService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService,  CategoryService>();
 
 //  Register Unit of work

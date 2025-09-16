@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using E_commerce.Application.Common.ServiceImplementations.ServiceDTO.Product;
 using E_commerce.Application.Common.ServiceImplementations.ServiceDTO.ProductCategory;
 using E_commerce.Core.Entities;
 using System;
@@ -19,21 +20,39 @@ namespace E_commerce.Application.Common.Mapping
                 .ForMember(dest => dest.User, opt => opt.Ignore());
             CreateMap<Category, CreateCategoryDto>();
 
+            CreateMap<CreateProductDto, Product>()
+              .ForMember(dest => dest.UserId, opt => opt.Ignore())
+              .ForMember(dest => dest.User, opt => opt.Ignore());
+            CreateMap<Product, CreateProductDto>();
+
             // Read
-            //CreateMap<CategoryDto, Category>()
-            // .ForMember(dest => dest.UserId, opt => opt.Ignore())
-            //    .ForMember(dest => dest.User, opt => opt.Ignore());
+          
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Category, GetCategoryDto>().ReverseMap();
 
-          
+            CreateMap<Product, GetProductDto>().
+                ForMember(dest => dest.DisplayPrice, opt => opt.MapFrom(src => $"{src.Currency} {src.UnitPrice:N2}"));
+
+            CreateMap<Product, ProductSummaryDto>().ReverseMap();
+            CreateMap<Product, ProductDto>().ReverseMap();
+
+         
             // Update
             CreateMap<UpdateCategoryDto, Category>()
                 .ForMember(dest => dest.UserId, opt => opt.Ignore())
                 .ForMember(dest => dest.User, opt => opt.Ignore());
-               // .ForMember(dest => dest.UpdatedAT, opt => opt.Ignore());  
-
             CreateMap<Category, UpdateCategoryDto>();
+
+
+
+            CreateMap<UpdateProductDto, Product>()
+              .ForMember(dest => dest.UserId, opt => opt.Ignore())
+              .ForMember(dest => dest.User, opt => opt.Ignore());
+
+            CreateMap<Product, UpdateProductDto>();
+
+
+
         }
     }
 }

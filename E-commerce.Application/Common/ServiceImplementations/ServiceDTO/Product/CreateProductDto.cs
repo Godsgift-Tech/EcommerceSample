@@ -20,18 +20,12 @@ namespace E_commerce.Application.Common.ServiceImplementations.ServiceDTO.Produc
 
         public string Description { get; set; }
         public Guid CategoryId { get; set; }
-     //   public Category Category { get; set; }
-      //  public Guid OrderId { get; set; }
-
-     //   public ICollection<Order> ProductOrder { get; set; } = new List<Order>();
+     
         public double AvailableQuantity { get; set; }
-      //  public double QuantityDemanded { get; set; }
-      //  public double RemainingQuantity => AvailableQuantity - QuantityDemanded;
+     
         public DateTime CreatedAT { get; set; }
-    //    public DateTime UpateddAT { get; set; }
-
+        public string Currency { get; set; } = "NGN";
         public double UnitPrice { get; set; }
-    //    public double TotalPrice => AvailableQuantity * UnitPrice;
 
     }
 }
