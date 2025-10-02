@@ -32,6 +32,7 @@ namespace Ecommerce.API.Controllers
             return Ok(result);
         }
 
+
         [HttpPut("update_{id}")]
         
         public async Task<IActionResult> Update( Guid id, [FromBody] UpdateCategoryDto dto)

@@ -21,22 +21,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<EcomDbContext>(e => e.
 UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddIdentity<AppUser, IdentityRole>(p =>
-{ 
-    p.Password.RequireDigit= true;
+{
+    p.Password.RequireDigit = true;
     p.Password.RequireUppercase = true;
     p.Password.RequiredLength = 6;
 
-}). AddEntityFrameworkStores<EcomDbContext>()
+}).AddEntityFrameworkStores<EcomDbContext>()
     .AddDefaultTokenProviders();
+
 
 //  Register Repository
 builder.Services.AddScoped<ICategoryRepository,  CategoryRepository>();
 builder.Services.AddScoped<IProductRepository,  ProductRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 //  Register Applcation Services
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICategoryService,  CategoryService>();
+builder.Services.AddScoped<IOrderService,  OrderService>();
 
 //  Register Unit of work
 builder.Services.AddScoped<IUnitOFWorks,  UnitOFWork>();

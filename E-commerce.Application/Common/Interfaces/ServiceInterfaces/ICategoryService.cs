@@ -12,6 +12,5 @@ namespace E_commerce.Application.Common.Interfaces.ServiceInterfaces
         Task<ServiceResponse<CreateCategoryDto>>GetCategoryById(Guid categoryId);
         Task<ServiceResponse<CreateCategoryDto>>GetCategoryByName(string categoryName);
         Task<ServiceResponse<PagedResult<GetCategoryDto>>> GetAllCategoriesAsync(int pageNumber, int pageSize);
-
     }
 }

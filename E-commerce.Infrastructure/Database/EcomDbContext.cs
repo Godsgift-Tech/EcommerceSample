@@ -1,9 +1,11 @@
 ﻿using E_commerce.Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,12 +13,15 @@ namespace E_commerce.Infrastructure.Database
 {
     public class EcomDbContext : IdentityDbContext<AppUser>
     {
-        public EcomDbContext(DbContextOptions<EcomDbContext>option) : base (option)
+        public EcomDbContext(DbContextOptions<EcomDbContext> option) : base(option)
         { }
-       
-        public DbSet<Product>Products { get; set; }
+
+        public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -50,10 +55,29 @@ namespace E_commerce.Infrastructure.Database
                 .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.NoAction);  // 
 
-            // Order ↔ Products many-to-many
-            builder.Entity<Order>()
-                .HasMany(or => or.Products)
-                .WithMany(p => p.ProductOrder);
+
+            //  Order ↔ OrderItems
+            builder.Entity<OrderItem>()
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.Items)
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //  Product ↔ OrderItems
+            builder.Entity<OrderItem>()
+                .HasOne(oi => oi.Product)
+                .WithMany(p => p.OrderItems)
+                .HasForeignKey(oi => oi.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //  Payment ↔ Order
+            //builder.Entity<Order>()
+            //    .HasOne(oi => oi.Product)
+            //    .WithMany(p => p.OrderItems)
+            //    .HasForeignKey(oi => oi.ProductId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+
         }
 
 

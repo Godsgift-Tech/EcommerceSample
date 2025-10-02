@@ -10,6 +10,7 @@ namespace E_commerce.Core.Entities
         public string CategoryName { get; set; }
         public string CategoryDescription{ get; set; }
         public string UserId { get; set; }
+
         public AppUser User { get; set; }
         public DateTime CreatedAT { get; set; }
         public DateTime? UpdatedAT { get; set; }
