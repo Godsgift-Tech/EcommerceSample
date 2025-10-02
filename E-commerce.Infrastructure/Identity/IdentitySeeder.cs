@@ -1,4 +1,4 @@
-﻿using E_commerce.Core.Entities;
+﻿ using E_commerce.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;

@@ -15,7 +15,10 @@ namespace E_commerce.Application.Common.Interfaces.RepositoryInterfaces
         Task<bool> DeleteProductAsync(Guid id);
         Task<Product?>GetProductById(Guid id);
         Task<Product?> GetProductByName(string productName);
-        Task<PagedResult<Product>> GetProductsByCategories(string? categoryName, string categoryId, double? Price, int pageNumber, int pageSize);
+        Task<PagedResult<Product>> GetProductsByCategories(string? categoryName, string? categoryId, double? Price, int pageNumber, int pageSize);
+        //void Detach(Product product);
+        //void AttachAsUnchanged(Product product);
+
 
     }
 }

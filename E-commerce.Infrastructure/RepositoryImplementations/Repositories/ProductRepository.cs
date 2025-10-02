@@ -44,7 +44,7 @@ namespace E_commerce.Infrastructure.RepositoryImplementations.Repositories
 
         }
 
-        public async Task<PagedResult<Product>> GetProductsByCategories(string? categoryName, string categoryId, double? Price, int pageNumber, int pageSize)
+        public async Task<PagedResult<Product>> GetProductsByCategories(string? categoryName, string? categoryId, double? Price, int pageNumber, int pageSize)
         {
 
             var query = _db.Products.
@@ -89,6 +89,7 @@ namespace E_commerce.Infrastructure.RepositoryImplementations.Repositories
                 // Copy values from detached product to the tracked entity
                 _db.Entry(update).CurrentValues.SetValues(product);
         }
+      
 
 
     }

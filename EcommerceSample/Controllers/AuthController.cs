@@ -65,12 +65,13 @@ namespace Ecommerce.API.Controllers
 
             var roles = await _userManager.GetRolesAsync(user);
             var authClaims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Email, user.Email!),
-            new Claim(ClaimTypes.Name, user.UserName!),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+{
+    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+    new Claim(ClaimTypes.Email, user.Email!),
+    new Claim(ClaimTypes.Name, user.UserName!),
+    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+};
+
 
             authClaims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
