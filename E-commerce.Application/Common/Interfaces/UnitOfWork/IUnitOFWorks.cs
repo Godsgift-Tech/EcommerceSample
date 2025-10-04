@@ -12,6 +12,7 @@ namespace E_commerce.Application.Common.Interfaces.UnitOfWork
         IProductRepository ProductRepository { get; }
         ICategoryRepository CategoryRepository { get; }
         IOrderRepository OrderRepository { get; }
+        IPaymentRepository PaymentRepository { get; }
 
         Task<int> Completed();
     }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using E_commerce.Application.Common.ServiceImplementations.ServiceDTO.Order;
+using E_commerce.Application.Common.ServiceImplementations.ServiceDTO.Payment;
 using E_commerce.Application.Common.ServiceImplementations.ServiceDTO.Product;
 using E_commerce.Application.Common.ServiceImplementations.ServiceDTO.ProductCategory;
 using E_commerce.Core.Entities;
@@ -74,6 +75,32 @@ namespace E_commerce.Application.Common.Mapping
             // Order → GetOrderDto
             CreateMap<Order, GetOrderDto>()
                 .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Items));
+
+            // PAYMENT
+            // -----------------------------
+            CreateMap<CreatePaymentDto, Payment>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.UserId, opt => opt.Ignore())
+                .ForMember(dest => dest.Status, opt => opt.Ignore())
+                .ForMember(dest => dest.PaymentDate, opt => opt.Ignore())
+                .ForMember(dest => dest.TransactionReference, opt => opt.Ignore())
+                .ForMember(dest => dest.Order, opt => opt.Ignore());
+
+            CreateMap<UpdatePaymentDto, Payment>()
+                .ForMember(dest => dest.Order, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore())
+                .ForMember(dest => dest.UserId, opt => opt.Ignore());
+
+            // Map Payment → GetPaymentDto (include OrderAmount from related Order)
+            CreateMap<Payment, GetPaymentDto>()
+                .ForMember(dest => dest.OrderAmount,
+                    opt => opt.MapFrom(src => src.Order != null ? src.Order.OrderAmount : 0))
+                .ForMember(dest => dest.TransactionReference, opt => opt.MapFrom(src => src.TransactionReference))
+                .ForMember(dest => dest.PaymentDate, opt => opt.MapFrom(src => src.PaymentDate))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
+
+            // Optional: if needed for admin or all-payment retrieval
+            CreateMap<Payment, PaymentDto>().ReverseMap();
         }
     }
 }

@@ -16,13 +16,14 @@ namespace E_commerce.Core.Entities
         public DateTime? OrderUpdatedAT { get; set; }
 
         public ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
+        public ICollection<Payment> Payments { get; set; } = new List<Payment>();
 
     }
 
-    
-   
 
-  
+
+
+
     public class OrderItem
     {
         [Key]

@@ -56,26 +56,35 @@ namespace E_commerce.Infrastructure.Database
                 .OnDelete(DeleteBehavior.NoAction);  // 
 
 
-            //  Order ↔ OrderItems
+            //  Order -> OrderItems
             builder.Entity<OrderItem>()
                 .HasOne(oi => oi.Order)
                 .WithMany(o => o.Items)
                 .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //  Product ↔ OrderItems
+            //  Product -> OrderItems
             builder.Entity<OrderItem>()
                 .HasOne(oi => oi.Product)
                 .WithMany(p => p.OrderItems)
                 .HasForeignKey(oi => oi.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //  Payment ↔ Order
-            //builder.Entity<Order>()
-            //    .HasOne(oi => oi.Product)
-            //    .WithMany(p => p.OrderItems)
-            //    .HasForeignKey(oi => oi.ProductId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            // Order -> Payments (One-to-Many)
+            builder.Entity<Payment>()
+                .HasOne(p => p.Order)
+                .WithMany(o => o.Payments)
+                .HasForeignKey(p => p.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Payment -> User (Many-to-One)
+            builder.Entity<Payment>()
+                .HasOne(p => p.User)
+                .WithMany()
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+          
+
 
 
         }
