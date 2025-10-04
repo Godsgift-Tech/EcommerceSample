@@ -10,7 +10,9 @@ namespace E_commerce.Application.Common.Interfaces.RepositoryInterfaces
 {
     public interface IPaymentRepository
     {
-        Task MakePayment(Payment payment);
+       // Task MakePayment(Payment payment);
+        Task<Payment?> MakePayment(Payment payment);
+
         Task<Payment?> GetPaymentById(Guid id);
         Task<PagedResult<Payment>> GetPaymentByUserId(string userId, int pageNumber, int pageSize);
 

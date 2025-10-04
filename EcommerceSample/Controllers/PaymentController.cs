@@ -13,21 +13,39 @@ namespace Ecommerce.API.Controllers
     [ApiController]
     public class PaymentController : ControllerBase
     {
-        private readonly PaymentService _pS;
-        public PaymentController(PaymentService pS)
+        private readonly IPaymentService _pS;
+        public PaymentController(IPaymentService pS)
         {
             _pS = pS;
         }
-      
+
+
+
+     
+
         [HttpGet("user")]
-        public async Task<IActionResult> GetPaymentsByUser([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        [Authorize] // ensure user must be logged in
+        public async Task<IActionResult> GetPaymentsByUser(
+    [FromQuery] string? userId,
+    [FromQuery] int pageNumber = 1,
+    [FromQuery] int pageSize = 10)
         {
-            // Extract userId from JWT claims
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (string.IsNullOrWhiteSpace(userId))
+            // Extract user info from token
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+
+            // If not authenticated
+            if (string.IsNullOrWhiteSpace(currentUserId))
                 return Unauthorized(new ServiceResponse<string>("Unauthorized user", false, "User ID missing"));
 
-            var response = await _pS.GetPaymentsByUserAsync(userId, pageNumber, pageSize);
+            // If user is NOT admin, force their own userId (ignore query param)
+            if (userRole != "Admin")
+                userId = currentUserId;
+            else if (string.IsNullOrWhiteSpace(userId))
+                return BadRequest(new ServiceResponse<string>("User ID is required for admin requests", false, "Missing userId"));
+
+            // Fetch payments
+            var response = await _pS.GetPaymentsByUserAsync(userId!, pageNumber, pageSize);
 
             if (!response.success)
                 return NotFound(response);
@@ -35,7 +53,7 @@ namespace Ecommerce.API.Controllers
             return Ok(response);
         }
 
-      
+
         [HttpPost]
         public async Task<IActionResult> MakePayment([FromBody] CreatePaymentDto dto)
         {

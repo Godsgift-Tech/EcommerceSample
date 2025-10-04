@@ -2,6 +2,7 @@
 using E_commerce.Application.Common.ServiceImplementations.Pagination;
 using E_commerce.Core.Entities;
 using E_commerce.Infrastructure.Database;
+using E_commerce.Infrastructure.Migrations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -56,7 +57,23 @@ namespace E_commerce.Infrastructure.RepositoryImplementations.Repositories
             return await PagedResult<Payment>.CreateAsync(query, pageNumber, pageSize);
         }
 
-        public async Task MakePayment(Payment payment) => await _db.Payments.AddAsync(payment);
+        //public async Task MakePayment(Payment payment) => await _db.Payments.AddAsync(payment);
+
+
+        //  // 2️⃣ Reload with related Order
+        //    return await _db.Payments
+        //        .Include(p => p.Order)
+        //        .FirstOrDefaultAsync(p => p.Id == payment.Id);
+
+        public async Task<Payment?> MakePayment(Payment payment)
+        {
+            await _db.Payments.AddAsync(payment);
+
+            return await _db.Payments
+                .Include(p => p.Order)
+                .FirstOrDefaultAsync(p => p.Id == payment.Id);
+        }
+
 
         public async Task UpdatePayment(Payment payment)
         {
