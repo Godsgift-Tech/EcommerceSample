@@ -87,7 +87,6 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
 
         public async Task<ServiceResponse<GetPaymentDto>> MakePaymentAsync(CreatePaymentDto dto, string userId)
         {
-            // Create a payment object in memory
             var payment = new Payment
             {
                 Id = Guid.NewGuid(),
@@ -96,23 +95,26 @@ namespace E_commerce.Application.Common.ServiceImplementations.Services
                 PaymentMethod = dto.PaymentMethod,
                 Amount = dto.Amount,
                 Currency = dto.Currency,
-                Status = "Pending",            // Default 
+                Status = "Pending",
                 PaymentDate = DateTime.UtcNow
             };
 
-            await _unitOfWork.PaymentRepository.MakePayment(payment);
-            await _unitOfWork.Completed();
+            //  Repository now returns a hydrated payment (includes Order)
+            var savedPayment = await _unitOfWork.PaymentRepository.MakePayment(payment);
 
-            var mapped = _mapper.Map<GetPaymentDto>(payment);
+            if (savedPayment == null)
+                return new ServiceResponse<GetPaymentDto>(null!, false, "Failed to create payment");
 
-            // Cache this specific payment 
-            _cache.Set($"Payment_{payment.Id}", mapped, TimeSpan.FromMinutes(5));
+            var mapped = _mapper.Map<GetPaymentDto>(savedPayment);
 
-            // Remove all global cache to ensure updated data for future reads
+            // ✅ Cache results
+            _cache.Set($"Payment_{savedPayment.Id}", mapped, TimeSpan.FromMinutes(5));
             _cache.Remove(AllPaymentsCacheKey);
 
             return new ServiceResponse<GetPaymentDto>(mapped, true, "Payment created successfully");
         }
+
+
 
         public async Task<ServiceResponse<GetPaymentDto>> UpdatePaymentAsync(UpdatePaymentDto dto)
         {
