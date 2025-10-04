@@ -19,12 +19,15 @@ namespace E_commerce.Infrastructure.UnitOFWorkImplementation.UnitOFWorks
 
         public IOrderRepository OrderRepository {  get; }
 
-        public UnitOFWork(EcomDbContext db, IProductRepository productRepository, ICategoryRepository categoryRepository, IOrderRepository orderRepository)
+        public IPaymentRepository PaymentRepository {  get; }
+
+        public UnitOFWork(EcomDbContext db, IProductRepository productRepository, ICategoryRepository categoryRepository, IOrderRepository orderRepository, IPaymentRepository paymentRepository)
         {
             _db = db;
             ProductRepository = productRepository;
             CategoryRepository = categoryRepository;
             OrderRepository = orderRepository;
+            PaymentRepository = paymentRepository;
         }
         public async Task<int> Completed() => await _db.SaveChangesAsync();
         public void Dispose() => _db.Dispose();

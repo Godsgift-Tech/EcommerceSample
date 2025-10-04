@@ -31,18 +31,20 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(p =>
 
 
 //  Register Repository
-builder.Services.AddScoped<ICategoryRepository,  CategoryRepository>();
-builder.Services.AddScoped<IProductRepository,  ProductRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 
 //  Register Applcation Services
 
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<ICategoryService,  CategoryService>();
-builder.Services.AddScoped<IOrderService,  OrderService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 //  Register Unit of work
-builder.Services.AddScoped<IUnitOFWorks,  UnitOFWork>();
+builder.Services.AddScoped<IUnitOFWorks, UnitOFWork>();
 builder.Services.AddMemoryCache();
 
 
@@ -57,23 +59,24 @@ builder.Services.AddControllers();
 //swagger
 
 builder.Services.AddSwaggerGen(e =>
-{ e.
+{
+    e.
 SwaggerDoc("v1", new OpenApiInfo
 {
     Title = "EcommDemo API",
     Version = "v1"
 });
-e.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-{
-    Name = "Authorization",
-    Type = SecuritySchemeType.Http,
-    Scheme = "Bearer",
-    BearerFormat = "JWT",
-    In = ParameterLocation.Header,
-    Description = "Enter: **Bearer {your JWT token}**"
-});
+    e.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter: **Bearer {your JWT token}**"
+    });
 
-e.AddSecurityRequirement(new OpenApiSecurityRequirement
+    e.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
             {
                 new OpenApiSecurityScheme
